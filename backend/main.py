@@ -23,10 +23,11 @@ import uvicorn
 # ══════════════════════════════════════════════════════════════
 # API KEYS
 # ══════════════════════════════════════════════════════════════
+#enter your api keys inside this ""
 API_KEYS = {
-    "newsapi":  os.environ.get("NEWSAPI_KEY",  "63c32e3f4cb24df099e08956b22cdeb7"),
-    "gnews":    os.environ.get("GNEWS_KEY",    "79073fa3fcaeddac726ee907dbca4bf3"),
-    "guardian": os.environ.get("GUARDIAN_KEY", "3e0ad077-d7ba-48df-b606-70e04f888019"),
+    "newsapi":  os.environ.get("NEWSAPI_KEY",  ""),
+    "gnews":    os.environ.get("GNEWS_KEY",    ""),
+    "guardian": os.environ.get("GUARDIAN_KEY", ""),
 }
 
 # ══════════════════════════════════════════════════════════════

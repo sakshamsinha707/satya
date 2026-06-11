@@ -1,75 +1,148 @@
 # Satya — AI Fake News Detector
 
-Full-stack fake news detection combining a **React + TypeScript** frontend with a **Python FastAPI** backend powered by an **ML Ensemble + Rule Engine + Live News API Training**.
+Satya is a full-stack fake news detection platform that combines **Machine Learning**, **Rule-Based Analysis**, and **Live News Cross-Checking** to help users assess the credibility of information before sharing it.
 
----
+## Live Demo
+
+🌐 Frontend: https://satya-fake-news-detector.netlify.app
 
 ## Architecture
 
 ```
 Satya/
-├── backend/          ← Python FastAPI (ML engine)
-│   ├── main.py       ← Single-file backend (all logic)
+├── backend/                     # Python FastAPI backend
+│   ├── main.py                  # ML engine + API endpoints
 │   └── requirements.txt
-├── src/              ← React + TypeScript frontend
-│   ├── pages/Satya.tsx          ← Main page
-│   ├── components/ResultsDisplay.tsx  ← Rich results UI
-│   └── components/...
-├── .env.example      ← Copy to .env
-└── package.json
+├── src/                         # React + TypeScript frontend
+│   ├── pages/
+│   │   └── Satya.tsx
+│   ├── components/
+│   │   ├── ResultsDisplay.tsx
+│   │   └── ...
+│   └── ...
+├── package.json
+└── ...
 ```
 
-## How it works
+## How It Works
 
-1. **Live training** — on startup the backend fetches real headlines from NewsAPI / GNews / Guardian and trains two ML models against a curated fake-news dataset.
-2. **ML Ensemble** — Logistic Regression + ANN (MLP) vote on the input text.
-3. **Rule Engine** — 6 deterministic rules catch patterns ML misses (short unverified claims, low-cred sources, conspiracy keywords).
-4. **Cross-check** — fetches related live news and computes cosine similarity to flag unsupported claims.
-5. **Credibility scorer** — analyses sensational vs credibility language, numbers, caps ratio, exclamations.
+1. **Live Training**
 
----
+   * On startup, the backend fetches recent headlines from NewsAPI, GNews, and Guardian (if API keys are provided).
+   * These headlines are combined with built-in datasets to train the models.
 
-## Setup
+2. **ML Ensemble**
 
-### 1. Backend (Python)
+   * Logistic Regression
+   * Artificial Neural Network (MLPClassifier)
+
+3. **Rule Engine**
+
+   * Detects suspicious patterns such as:
+
+     * Short unverified claims
+     * Conspiracy language
+     * Miracle cure claims
+     * Viral urgency phrases
+     * Low-credibility sources
+
+4. **Live Cross-Check**
+
+   * Searches for related news articles.
+   * Uses cosine similarity to determine whether the claim aligns with verified reporting.
+
+5. **Credibility Scoring**
+
+   * Evaluates:
+
+     * Sensational language
+     * Evidence-based wording
+     * Use of statistics
+     * Excessive capitalization
+     * Source reliability
+
+## Features
+
+* 🌐 English / Hindi interface
+* 🤖 ML Ensemble (Logistic Regression + ANN)
+* 🛡️ Explainable Rule Engine
+* 🔍 Live News Cross-Checking
+* 📊 Detailed Model Breakdown
+* 📈 Trend Predictions
+* 🧠 Keyword Influence Analysis
+* 📰 Fact-Check Resource Recommendations
+* 📱 Responsive User Interface
+
+## Screens Included in the Application
+
+* Landing page introducing Satya
+* Analysis result dashboard
+* Detailed explanation panel
+* Rule engine explanations
+* Live cross-check results
+* Source reliability assessment
+* ML model comparison
+* Keyword influence visualization
+* Trend prediction dashboard
+* Fact-check resource suggestions
+
+## Backend Setup (FastAPI)
 
 ```bash
 cd backend
 pip install -r requirements.txt
 
-# Optional: set API keys for live training data
-export NEWSAPI_KEY=your_key_here
-export GNEWS_KEY=your_key_here
-export GUARDIAN_KEY=your_key_here
+# Optional API keys
+export NEWSAPI_KEY=your_key
+export GNEWS_KEY=your_key
+export GUARDIAN_KEY=your_key
 
 python main.py
-# Backend starts on http://localhost:8000
 ```
 
-> **Free API keys:**
-> - NewsAPI: https://newsapi.org/register (100 req/day)
-> - GNews: https://gnews.io (100 req/day)
-> - Guardian: https://open-platform.theguardian.com (unlimited)
->
-> Without keys the backend uses the built-in offline dataset — still works well.
+Backend runs on:
 
-### 2. Frontend (React)
+```
+http://localhost:8000
+```
+
+FastAPI documentation:
+
+```
+http://localhost:8000/docs
+```
+
+## Frontend Setup (React)
 
 ```bash
-# In the project root
-cp .env.example .env
-# Edit .env if backend runs on a different port
-
 npm install
 npm run dev
-# Frontend starts on http://localhost:5173
 ```
 
----
+Frontend runs on:
 
-## API
+```
+http://localhost:5173
+```
 
-### `POST /verify`
+The frontend automatically uses:
+
+```typescript
+const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:8000";
+```
+
+For production deployments, configure:
+
+```env
+VITE_API_URL=https://your-render-backend.onrender.com
+```
+
+## API Endpoint
+
+### POST `/verify`
+
+Request:
 
 ```json
 {
@@ -80,26 +153,45 @@ npm run dev
 ```
 
 Response includes:
-- `verdict`: `"REAL"` or `"FAKE"`
-- `trust_score`: 0–100
-- `credibility_grade`: A / B / C / D
-- `fake_probability` / `real_probability`
-- `decision_method`: Rule Override or ML Ensemble
-- `rule_fired` + `rule_reasons`
-- `cross_check_similarity`
-- `keywords`: top TF-IDF features with LR coefficients
-- `trends`: Public Reaction, Viral Spread Risk, Economic Impact, Political Sensitivity
-- `ml_models`: detailed LR + ANN breakdown
-- `evidence`: fact-check resource links
 
----
+* Verdict (REAL / FAKE)
+* Trust Score
+* Credibility Grade
+* Fake / Real Probabilities
+* Decision Method
+* Rule Engine Explanations
+* Cross-Check Similarity
+* Source Reliability Metrics
+* ML Model Outputs
+* Keyword Influence Analysis
+* Trend Predictions
+* Fact-Check Evidence Links
 
-## Features
+## Technology Stack
 
-- 🌐 **English / Hindi** UI toggle
-- 📁 File upload support (paste or upload text)
-- 📊 Detailed ML model comparison (LR vs ANN)
-- 🔍 Live cross-check against NewsAPI
-- 🛡️ Rule engine with explainable reasons
-- 💡 Keyword influence visualisation
-- 📈 Trend predictions (viral risk, political sensitivity, economic impact)
+### Frontend
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* shadcn/ui
+
+### Backend
+
+* FastAPI
+* scikit-learn
+* NumPy
+* Uvicorn
+* Pydantic
+
+### Machine Learning
+
+* Logistic Regression
+* MLPClassifier (ANN)
+* TF-IDF Vectorization
+* Cosine Similarity
+
+## Disclaimer
+
+Satya is designed as an educational and research-oriented fact-checking assistant. The system provides probabilistic assessments and should not be considered a substitute for professional journalism or independent verification from trusted sources.
